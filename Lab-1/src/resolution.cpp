@@ -15,7 +15,7 @@ int main() {
     if(!mode) return -1;
 
     std::cout << "Screen Resolution: " << mode->width << " x " << mode->height << std::endl;
-    std::cout << "Refresh Rate: " << mode->refreshRate << std::endl;
+    std::cout << "Refresh Rate: " << mode->refreshRate <<std::endl;
 
     glfwTerminate();
     return 0;
