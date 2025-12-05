@@ -60,11 +60,8 @@ int main(){
     while(!glfwWindowShouldClose(window)){
         glClear(GL_COLOR_BUFFER_BIT);
         
-        glColor3f(1.0f, 0.5f, 0.5f);
-        lineDDA(0, 0, 100, 120);
-
-        glColor3f(0.3f, 0.7f, 0.2f);
-        lineDDA(-180, 50, 180, -50);
+        glColor3f(0.22f, 0.78f, 0.55f);
+        lineDDA(-250, 180, 100, -120);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

@@ -10,14 +10,6 @@ struct Slice
     float r, g, b;
 };
 
-Slice slices[] = {
-    {0, 100, 1, 0, 0},
-    {100, 210, 0, 1, 0},
-    {210, 360, 0, 0, 1}
-};
-
-int numSlices = 3;
-
 float sx, sy;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -57,7 +49,7 @@ bool inSlice(float deg, float start, float end){
     return deg >=start && deg < end;
 }
 
-void draw8points(int x, int xc, int y, int yc){
+void draw8points(int x, int xc, int y, int yc, Slice slices[], int numSlices){
     int px[8] = {
         x + xc, -x + xc, x + xc, -x + xc,
         y + xc, -y + xc, y + xc, -y + xc
@@ -81,13 +73,13 @@ void draw8points(int x, int xc, int y, int yc){
     }
 }
 
-void midpointCircle(int xc, int yc, int r){
+void midpointCircle(int xc, int yc, int r, Slice slices[], int numSlices){
     int x = 0, y = r;
     int p = 1 - r;
 
     while (x < y)
     {
-        draw8points(x, xc, y, yc);
+        draw8points(x, xc, y, yc, slices, numSlices);
         if(p < 0){
             x++;
             p += 2 * x + 1;
@@ -118,12 +110,43 @@ int main(){
     framebuffer_size_callback(window, width, height);
 
     glClearColor(0.1, 0.1, 0.1, 1);
+
+    //Input dataset
+    int data[] = {20, 25, 40, 80};
+    int numSlices = sizeof(data) / sizeof(data[0]);
+
+    int total = 0;
+    for(int i = 0; i < numSlices; i++){
+        total += data[i];
+    }
+
+    //Calculate angles of each data
+    float angle[numSlices];
+    for(int i = 0; i < numSlices; i++){
+        angle[i] = (float)data[i] / total * 360;
+    }
+
+    //Set the starting and ending points of each slice
+    Slice slices[numSlices];
+    slices[0].startAngle = 0.0;
+    slices[0].endAngle = angle[0];
+    for(int i = 1; i < numSlices; i++){
+        slices[i].startAngle =  slices[i-1].endAngle;
+        slices[i].endAngle = slices[i].startAngle + angle[i];
+    }
+
+    //Select color for each slice
+    for(int i = 0; i < numSlices; i++){
+        slices[i].r = abs(1 - (0.1 + i * 0.1));
+        slices[i].g = abs(1 - (0.4 + i * 0.2));
+        slices[i].b = abs(1 - (0.7 + i * 0.4));
+    }
     
     while(!glfwWindowShouldClose(window)){
         glClear(GL_COLOR_BUFFER_BIT);
 
         glColor3f(0.2f, 0.25f, 0.8f);
-        midpointCircle(100, -100, 100);
+        midpointCircle(0, 0, 150, slices, numSlices);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
