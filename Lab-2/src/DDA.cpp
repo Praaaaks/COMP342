@@ -2,8 +2,11 @@
 #include<GLFW/glfw3.h>
 #include<iostream>
 #include<cmath>
+#include<chrono>
+#include<thread>
 
 float sx, sy;
+bool lineDrawn = false;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -19,7 +22,7 @@ void drawPoint(float x, float y){
     glEnd();
 }
 
-void lineDDA(int x1, int y1, int x2, int y2){
+void lineDDA(int x1, int y1, int x2, int y2, GLFWwindow* window){
     int dx = x2 - x1;
     int dy = y2 - y1;
 
@@ -34,6 +37,11 @@ void lineDDA(int x1, int y1, int x2, int y2){
         drawPoint((float)round(x), (float)round(y));
         x += xInc;
         y += yInc;
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(30));
     }
 }
 
@@ -58,10 +66,13 @@ int main(){
     glClearColor(0, 0, 0, 1);
     
     while(!glfwWindowShouldClose(window)){
-        glClear(GL_COLOR_BUFFER_BIT);
         
-        glColor3f(0.22f, 0.78f, 0.55f);
-        lineDDA(-250, 180, 100, -120);
+        if(!lineDrawn){
+            glClear(GL_COLOR_BUFFER_BIT);
+            glColor3f(0.22f, 0.78f, 0.55f);
+            lineDDA(-250, 180, 100, -120, window);
+            lineDrawn = true;
+        }
 
         glfwSwapBuffers(window);
         glfwPollEvents();
