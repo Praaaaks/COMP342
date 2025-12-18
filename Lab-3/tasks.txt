@@ -1,3 +1,0 @@
-1. Mid-Point Ellipse
-2. 5 2D transformations homogeneous.
-3. Composite transformation, minimum 3 transformations.

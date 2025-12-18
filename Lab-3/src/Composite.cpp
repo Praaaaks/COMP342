@@ -133,19 +133,45 @@ int main(){
         glColor3f(0.8f, 0.1f, 0.4f);
         drawTriangle(p1, p2, p3);
 
-        //+90 rotation about (100, 100)
-        glColor3f(0.1f, 0.8f, 0.4f);
-        Matrix3x3 T1, T2, R, result1, result2;
-        translate(T1, -100.0f, -100.0f);
-        rotate(R, 90.0f * M_PI / 180.0f);
-        translate(T2, 100.0f, 100.0f);
+        //+90 rotation about (100, 100), followed by uniform scaling by 2 about origin
+        Matrix3x3 T1, T2, R, S, result1, result2, result;
+        Point r = {100.0f, 100.0f};
+        float theta = 90.0f * M_PI / 180.0f;
+        translate(T1, -r.x, -r.y);
+        rotate(R, theta);
+        translate(T2, r.x, r.y);
+        scale(S, 2.0f, 2.0f);
         composeTransformations(result1, T1, R);
         composeTransformations(result2, result1, T2);
-
+        composeTransformations(result, result2, S);
+        
+        glColor3f(0.1f, 0.8f, 0.4f);
         drawTriangle(
-            transformPoint(p1, result2),
-            transformPoint(p2, result2),
-            transformPoint(p3, result2)
+            transformPoint(p1, result),
+            transformPoint(p2, result),
+            transformPoint(p3, result)
+        );
+
+        // Reflection about y = mx + c, m=sqrt3, c=-50
+        Matrix3x3 T3, T4, R1, R2, Rx, result3, result4, result5, resultR; 
+        float m = sqrt(3), c = -50;
+        theta = atan(m);
+        translate(T3, 0.0f, -c);
+        rotate(R1, -theta);
+        reflectX(Rx);
+        rotate(R2, theta);
+        translate(T4, 0.0f, c);
+        
+        composeTransformations(result3, T3, R1);
+        composeTransformations(result4, result3, Rx);
+        composeTransformations(result5, result4, R2);
+        composeTransformations(resultR, result5, T4);
+        
+        glColor3f(0.4f, 0.1f, 0.8f);
+        drawTriangle(
+            transformPoint(p1, resultR),
+            transformPoint(p2, resultR),
+            transformPoint(p3, resultR)
         );
 
         glfwSwapBuffers(window);
