@@ -41,6 +41,9 @@ void drawAxes(){
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if (action != GLFW_PRESS)
+        return;
+
     if (action == GLFW_PRESS) {
         switch (key) {
             case GLFW_KEY_1:
@@ -61,8 +64,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             case GLFW_KEY_6:
                 currentMode = REFLECT_Y;
                 break;
-            default:
+            case GLFW_KEY_0:
                 currentMode = NONE;
+                break;
+            default:
                 break;
         }
     }
@@ -170,7 +175,7 @@ void reflectY(Point p1, Point p2, Point p3){
 int main(){
     if(!glfwInit()) return -1;
     
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Ellipse", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "2D Transform", nullptr, nullptr);
     if (!window) { glfwTerminate(); return -1; }
     
     glfwMakeContextCurrent(window);

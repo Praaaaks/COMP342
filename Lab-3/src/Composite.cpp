@@ -85,6 +85,11 @@ void reflectX(Matrix3x3 Rx){
     Rx[1][1] = -1;
 }
 
+void reflectY(Matrix3x3 Ry){
+    Identity(Ry);
+    Ry[0][0] = -1;
+}
+
 void matrixMultiply(Matrix3x3 A, Matrix3x3 B, Matrix3x3 result){
     for(int i = 0; i < 3; i++){
         for(int j = 0; j < 3; j++){
@@ -103,7 +108,7 @@ void composeTransformations(Matrix3x3 result, Matrix3x3 T1, Matrix3x3 T2){
 int main(){
     if(!glfwInit()) return -1;
     
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Ellipse", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "Composite Transform", nullptr, nullptr);
     if (!window) { glfwTerminate(); return -1; }
     
     glfwMakeContextCurrent(window);
