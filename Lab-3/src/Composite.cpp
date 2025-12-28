@@ -138,17 +138,17 @@ int main(){
         glColor3f(0.8f, 0.1f, 0.4f);
         drawTriangle(p1, p2, p3);
 
-        //+90 rotation about (100, 100), followed by uniform scaling by 2 about origin
+        // -135 rotation about (-100, 100), followed by non-uniform scaling about same point
         Matrix3x3 T1, T2, R, S, result1, result2, result;
-        Point r = {100.0f, 100.0f};
-        float theta = 90.0f * M_PI / 180.0f;
+        Point r = {-100.0f, 100.0f};
+        float theta = -135.0f * M_PI / 180.0f;
         translate(T1, -r.x, -r.y);
         rotate(R, theta);
+        scale(S, 1.5f, 0.5f);
         translate(T2, r.x, r.y);
-        scale(S, 2.0f, 2.0f);
         composeTransformations(result1, T1, R);
-        composeTransformations(result2, result1, T2);
-        composeTransformations(result, result2, S);
+        composeTransformations(result2, result1, S);
+        composeTransformations(result, result2, T2);
         
         glColor3f(0.1f, 0.8f, 0.4f);
         drawTriangle(
@@ -157,9 +157,9 @@ int main(){
             transformPoint(p3, result)
         );
 
-        // Reflection about y = mx + c, m=sqrt3, c=-50
+        // Reflection about y = mx + c, m=-1/sqrt3, c=100
         Matrix3x3 T3, T4, R1, R2, Rx, result3, result4, result5, resultR; 
-        float m = sqrt(3), c = -50;
+        float m = -1.0f / sqrt(3), c = 100;
         theta = atan(m);
         translate(T3, 0.0f, -c);
         rotate(R1, -theta);

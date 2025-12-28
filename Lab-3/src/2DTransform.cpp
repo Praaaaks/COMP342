@@ -200,27 +200,27 @@ int main(){
         glColor3f(1.0f, 1.0f, 1.0f);
         drawAxes();
 
-        Point p1 = {25.0f, 25.0f};
+        Point p1 = {75.0f, 25.0f};
         Point p2 = {25.0f, 100.0f};
-        Point p3 = {100.0f, 25.0f};
+        Point p3 = {125.0f, 175.0f};
 
-        glColor3f(0.5f, 0.8f, 0.1f);
+        glColor3f(0.8f, 0.7f, 0.1f);
         drawTriangle(p1, p2, p3);
 
-        glColor3f(0.1f, 0.8f, 0.5f);
+        glColor3f(0.1f, 0.5f, 0.5f);
         
         switch(currentMode) {
             case TRANSLATE:
-                translate(p1, p2, p3, 150.0f, 50.0f);
+                translate(p1, p2, p3, -200.0f, -250.0f);
                 break;
             case SCALE:
-                scale(p1, p2, p3, 1.5f, 1.5f);
+                scale(p1, p2, p3, 2.0f, 1.2f);
                 break;
             case ROTATE:
-                rotate(p1, p2, p3, M_PI / 4);
+                rotate(p1, p2, p3, M_PI / 3);
                 break;
             case SHEAR:
-                shear(p1, p2, p3, 0.5f, 0.0f);
+                shear(p1, p2, p3, 0.0f, 1.5f);
                 break;
             case REFLECT_X:
                 reflectX(p1, p2, p3);

@@ -85,11 +85,11 @@ int main(){
     while(!glfwWindowShouldClose(window)){
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glColor3f(0.4f, 0.1f, 0.8f);
-        midpointEllipse(0, 0, 100, 150);
+        glColor3f(0.3f, 0.15f, 0.7f);
+        midpointEllipse(0, -50, 50, 200);
 
-        glColor3f(0.8f, 0.1f, 0.4f);
-        midpointEllipse(0, 0, 150, 100);
+        glColor3f(0.9f, 0.2f, 0.45f);
+        midpointEllipse(0, 150, 200, 50);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

@@ -6,7 +6,8 @@ LAB ?= Lab-4
 SRC ?=
 
 GLAD = $(LAB)/src/glad.c
-OUT = $(LAB)/output.exe
+EXE_NAME = $(basename $(notdir $(SRC)))
+OUT = $(LAB)/$(EXE_NAME).exe
 
 all:
 	$(CXX) $(SRC) $(GLAD) $(CXXFLAGS) $(LIBS) -o $(OUT)
