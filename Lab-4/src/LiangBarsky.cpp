@@ -88,7 +88,7 @@ void LineClip(Point p1, Point p2){
 int main(){
     if(!glfwInit()) return -1;
     
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Cohen Sutherland", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "Liang Barksy", nullptr, nullptr);
     if (!window) { glfwTerminate(); return -1; }
     
     glfwMakeContextCurrent(window);
