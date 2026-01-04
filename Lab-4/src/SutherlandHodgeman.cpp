@@ -4,6 +4,8 @@
 #include<vector>
 
 float sx, sy;
+bool clipEnabled = false;
+int currentPolygon = 1;
 
 struct Point
 {
@@ -123,6 +125,23 @@ Polygon clipPolygon(const Polygon& poly){
     return output;
 }
 
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
+    if (action == GLFW_PRESS)
+    {
+        if (key == GLFW_KEY_C)
+            clipEnabled = true;
+
+        if (key == GLFW_KEY_R)
+            clipEnabled = false;
+
+        if (key == GLFW_KEY_1)
+            currentPolygon = 1;
+
+        if (key == GLFW_KEY_2)
+            currentPolygon = 2;
+    }
+}
+
 int main(){
     if(!glfwInit()) return -1;
     
@@ -137,6 +156,8 @@ int main(){
         return -1;
     }
 
+    glfwSetKeyCallback(window, key_callback);
+
     int width, height;
     glfwGetFramebufferSize(window, &width, &height);
     framebuffer_size_callback(window, width, height);
@@ -149,18 +170,34 @@ int main(){
         glColor3f(1.0f, 1.0f, 1.0f);
         drawClippingWindow();
 
-        Polygon poly = {
+        Polygon poly1 = {
             {-100.0f, 50.0f},
             {50.0f, 150.0f},
             {200.0f, 0.0f},
             {0.0f, -150.0f}, 
             {-150.0f, -50.0f}
         };
-        drawPolygon(poly);
 
-        glColor3f(1.0f, 0.0f, 0.0f);
-        Polygon clipped = clipPolygon(poly);
-        drawPolygon(clipped);
+        Polygon poly2 = {
+            {-200.0f, 0.0f},
+            {-50.0f, 200.0f},
+            {150.0f, 100.0f},
+            {100.0f, -150.0f}
+        };
+        
+        Polygon poly = (currentPolygon == 1) ? poly1 : poly2;
+
+        if (!clipEnabled)
+        {
+            glColor3f(0.0f, 1.0f, 0.0f);   // Original polygon
+            drawPolygon(poly);
+        }
+        else
+        {
+            glColor3f(1.0f, 0.0f, 0.0f);   // Clipped polygon
+            Polygon clipped = clipPolygon(poly);
+            drawPolygon(clipped);
+        }
         
         glfwSwapBuffers(window);
         glfwPollEvents();

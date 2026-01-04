@@ -4,6 +4,8 @@
 #include<algorithm>
 
 float sx, sy;
+bool clipEnabled = false;
+int currentLine = 1;
 
 struct Point
 {
@@ -85,6 +87,23 @@ void LineClip(Point p1, Point p2){
     drawLine(c1, c2);
 }
 
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
+    if (action == GLFW_PRESS)
+    {
+        if (key == GLFW_KEY_C)
+            clipEnabled = true;
+
+        if (key == GLFW_KEY_R)
+            clipEnabled = false;
+
+        if (key == GLFW_KEY_1)
+            currentLine = 1;
+
+        if (key == GLFW_KEY_2)
+            currentLine = 2;
+    }
+}
+
 int main(){
     if(!glfwInit()) return -1;
     
@@ -99,15 +118,17 @@ int main(){
         return -1;
     }
 
+    glfwSetKeyCallback(window, key_callback);
+
     int width, height;
     glfwGetFramebufferSize(window, &width, &height);
     framebuffer_size_callback(window, width, height);
 
     glClearColor(0.1, 0.1, 0.1, 1);
 
-    Point p1 = {-300.0f, 50.0f};
-    Point p2 = {265.0f, 200.0f};
-    Point p3 = {110.0f, -200.0f};
+    Point p1 = {40.0f, 0.0f};
+    Point p2 = {-265.0f, -10.0f};
+    Point p3 = {-100.0f, -200.0f};
     Point p4 = {300.0f, 0.0f};
     
     while(!glfwWindowShouldClose(window)){
@@ -116,12 +137,30 @@ int main(){
         glColor3f(1.0f, 1.0f, 1.0f);
         drawClippingWindow();
 
-        drawLine(p1, p2);
-        drawLine(p3, p4);
+        Point a, b;
 
-        glColor3f(1.0f, 0.0f, 0.0f);
-        LineClip(p1, p2);
-        LineClip(p3, p4);
+        switch(currentLine){
+            case 1:
+                a = p1;
+                b = p2;
+                break;
+            case 2:
+                a = p3;
+                b = p4;
+                break;
+            default:
+                a = p1;
+                b = p2;
+                break;
+        }
+        
+        
+        if(!clipEnabled){
+            drawLine(a, b);
+        } else {
+            glColor3f(1.0f, 0.0f, 0.0f);
+            LineClip(a, b);
+        }
         
         glfwSwapBuffers(window);
         glfwPollEvents();
