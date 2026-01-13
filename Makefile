@@ -1,10 +1,10 @@
 CXX = g++
 CXXFLAGS = -Iinclude -Wall
-LIBS = -Llib -lglfw3 -lopengl32 -lgdi32
+LIBS = -Llib -lglfw3 -lopengl32 -lgdi32 -lglu32
 
-LAB ?= Lab-4
 SRC ?=
 
+LAB = $(firstword $(subst /, ,$(SRC)))
 GLAD = $(LAB)/src/glad.c
 EXE_NAME = $(basename $(notdir $(SRC)))
 OUT = $(LAB)/$(EXE_NAME).exe
